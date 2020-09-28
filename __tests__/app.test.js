@@ -14,11 +14,34 @@ describe('tardygram routes', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'sarah@rector.com',
-        password: 'wordpass'
+        password: 'wordpass',
+        profilePhoto: 'hotmess.jpg'
       });
     expect(response.body).toEqual({
       id: expect.any(String),
-      email: 'sarah@rector.com'
+      email: 'sarah@rector.com',
+      profilePhoto: 'hotmess.jpg'
+    });
+  });
+
+  it('logs in a user via POST', async() => {
+    const user = await UserService.create({
+      email: 'sarah@rector.com',
+      password: 'wordpass',
+      profilePhoto: 'hotmess.jpg'
+    });
+
+    const response = await request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'sarah@rector.com',
+        password: 'wordpass'
+      });
+
+    expect(response.body).toEqual({
+      id: user.id,
+      email: 'sarah@rector.com',
+      profilePhoto: 'hotmess.jpg'
     });
   });
 });
