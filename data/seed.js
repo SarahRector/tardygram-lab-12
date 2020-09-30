@@ -10,4 +10,13 @@ module.exports = async({ userCount = 5, gramCount = 500 } = {}) => {
       profilePhoto: 'hotmess.jpg'
     });
   }));
+
+  const grams = await Promise.all([...Array(gramCount)].map(() => {
+    return Gram.insert({
+      photoUrl: chance.url(),
+      caption: chance.sentence(),
+      tags: chance.hashtag(),
+      userId: chance.pickone(users).id
+    });
+  }));
 };
